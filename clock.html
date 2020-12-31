@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>coundown clock</title>
+<script src="luxon.min.js"></script>
+<script>
+    function countdownTime(){
+        //luxon.js関数定義
+        const DateTime = luxon.DateTime;
+        //現在時刻をunixtimeに変換
+        const now = DateTime.local();
+        //達成時刻をunixtimeに変換
+        later = DateTime.fromFormat('2021-01-01 00:00:00', 'yyyy-LL-dd HH:mm:ss');
+        //unixtimeの達成時刻から現在時刻を引く
+        differ = later - now;
+        if( later < now ) {
+            //期限が過ぎた場合 -1 を掛けて正の値に変換
+            differ *= -1;
+        }
+        //日
+        let diffDay  = differ / (1000 * 60 * 60 * 24);
+            diffDay  = Math.floor(diffDay);
+            differ  = differ % (1000 * 60 * 60 * 24);
+        //時
+        let diffHour = differ / (1000 * 60 * 60);
+            diffHour = Math.floor(diffHour);
+            if(diffHour < 10){
+                //桁を2桁に揃える
+                diffHour = "0" + diffHour;
+            }
+            differ  = differ % (1000 * 60 * 60);
+        //分
+        let diffMin  = differ / (1000 * 60);
+            diffMin  = Math.floor(diffMin);
+            if(diffMin < 10){
+                diffMin = "0" + diffMin;
+            }
+            differ  = differ % (1000 * 60);
+
+        //秒
+        let diffSec  = differ / 1000;
+            diffSec  = Math.floor(diffSec);
+            if(diffSec < 10){
+                diffSec = "0" + diffSec;
+            }
+        let countdown;
+        if( diffDay > 0 ){
+            //1日以上ある場合
+            countdown =  diffDay + '日' + diffHour + '時間' + diffMin + '分' + diffSec + '秒';
+        }else{
+            //0日の場合
+            countdown =  diffHour + '時間' + diffMin + '分' + diffSec + '秒';
+        }
+        if( later > now ){
+            //期限が来てない場合
+            msg = "年明けまで" + countdown;
+        }else{
+            //期限が過ぎた場合
+            msg = "年明けから" + countdown + "経過しました。";
+        }
+        //指定したCSSセレクターに表示する
+        document.getElementById('countdown').innerHTML = msg;
+    }
+    //1000ミリ秒ごとに実行する
+    setInterval('countdownTime()', 1000);
+</script>
+</head>
+<body>
+    <span id="countdown"></span>
+</body>
+</html>
