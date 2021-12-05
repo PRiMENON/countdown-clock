@@ -5,15 +5,18 @@
 <title>coundown clock</title>
 <script src="luxon.min.js"></script>
 <script>
+    'use strict';
     function countdownTime(){
+        let msg;
+        let countdown;
         //luxon.js関数定義
         const DateTime = luxon.DateTime;
         //現在時刻をunixtimeに変換
         const now = DateTime.local();
         //達成時刻をunixtimeに変換
-        later = DateTime.fromFormat('2021-01-01 00:00:00', 'yyyy-LL-dd HH:mm:ss');
+        let later = DateTime.fromFormat('2021-01-01 00:00:00', 'yyyy-LL-dd HH:mm:ss');
         //unixtimeの達成時刻から現在時刻を引く
-        differ = later - now;
+        let differ = later - now;
         if( later < now ) {
             //期限が過ぎた場合 -1 を掛けて正の値に変換
             differ *= -1;
@@ -44,7 +47,6 @@
             if(diffSec < 10){
                 diffSec = "0" + diffSec;
             }
-        let countdown;
         if( diffDay > 0 ){
             //1日以上ある場合
             countdown =  diffDay + '日' + diffHour + '時間' + diffMin + '分' + diffSec + '秒';
@@ -57,13 +59,19 @@
             msg = "年明けまで" + countdown;
         }else{
             //期限が過ぎた場合
-            msg = "年明けから" + countdown + "<br>HAPPY NEW YEAR 2021!";
+            msg = "年明けから" + countdown + "<br>HAPPY NEW YEAR 2022!";
         }
         //指定したCSSセレクターに表示する
         document.getElementById('countdown').innerHTML = msg;
     }
-    //1000ミリ秒ごとに実行する
-    setInterval('countdownTime()', 1000);
+
+    //実行する
+    //setTimeoutで実行タイミングをミリ秒単位で調整
+    setTimeout(function() {
+        countdownTime();
+        setInterval("countdownTime()", 1000);
+
+    }, 1000 - new Date().getUTCMilliseconds());
 </script>
 <style>
 <!--
