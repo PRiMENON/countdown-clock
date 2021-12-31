@@ -43,7 +43,20 @@
 
         //秒
         let diffSec  = differ / 1000;
-            diffSec  = Math.floor(diffSec);
+            if( later < now) {
+                //期限が過ぎた場合、Math.floorで小数点以下を切り捨てる
+                console.log(diffSec);
+                diffSec = Math.floor(diffSec);
+            }else{
+                //期限が過ぎていない場合、Math.ceilで小数点以下を切り上げる
+                console.log(diffSec);
+                diffSec = Math.ceil(diffSec);
+                //60秒を0秒と表示する
+                if (diffSec == 60) {
+                    diffSec = 0;
+                }
+            }
+            // 10秒以下はゼロを付加する
             if(diffSec < 10){
                 diffSec = "0" + diffSec;
             }
